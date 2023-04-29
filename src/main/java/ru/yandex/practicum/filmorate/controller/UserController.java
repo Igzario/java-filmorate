@@ -1,5 +1,4 @@
 package ru.yandex.practicum.filmorate.controller;
-import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -16,7 +15,7 @@ import java.util.List;
 @RestController
 public class UserController {
     List<User> users = new ArrayList<>();
-    private int id =1;
+    private int id = 1;
 
     @GetMapping("/users")
     public List<User> userTake() {
@@ -39,7 +38,7 @@ public class UserController {
                 log.error(exception.getMessage());
                 return new ResponseEntity<>(new AppMessageError(400,error), HttpStatus.BAD_REQUEST);
             } else {
-                log.error("Не предвиденная ошибка: "+ error);
+                log.error("Не предвиденная ошибка: " + error);
                 return new ResponseEntity<>(new AppMessageError(500,error), HttpStatus.valueOf(500));
             }
         }
@@ -49,19 +48,19 @@ public class UserController {
 
 
     @PutMapping("/users")
-    public ResponseEntity userUpdate( @RequestBody User user) {
+    public ResponseEntity userUpdate(@RequestBody User user) {
         try {
             if (!validation(user)) {
                 throw new ValidationException();
             }
             for (User user1 : users) {
                 if (user.getId() == user1.getId()) {
-                    int i =users.indexOf(user1);
+                    int i = users.indexOf(user1);
                     users.remove(user1);
                     users.add(i, user);
                     log.info("Обновлен пользователь: {} ", user);
                     return new ResponseEntity<>(new AppMessageOk(201,
-                            "Обновлен пользователь:" , user), HttpStatus.valueOf(201));
+                            "Обновлен пользователь:", user), HttpStatus.valueOf(201));
                 }
             }
         } catch (Exception exception) {
@@ -79,7 +78,7 @@ public class UserController {
         id++;
         log.info("Пользователь для обновления не найден. Добавлен пользователь: {} ", user);
         return new ResponseEntity<>(new AppMessageOk(201,
-                "Пользователь для обновления не найден. Добавлен пользователь: " , user), HttpStatus.valueOf(201));
+                "Пользователь для обновления не найден. Добавлен пользователь: ", user), HttpStatus.valueOf(201));
     }
 
     private boolean validation(User user) {
