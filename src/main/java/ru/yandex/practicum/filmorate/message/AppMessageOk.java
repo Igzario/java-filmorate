@@ -1,7 +1,7 @@
 package ru.yandex.practicum.filmorate.message;
 import lombok.Getter;
 
-public class AppMessageOk extends AppMessageError{
+public class AppMessageOk extends AppMessageError {
     @Getter
     private Object object;
 
