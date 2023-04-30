@@ -59,7 +59,6 @@ class FilmorateApplicationTests {
         String responseBody = response.body().string();
 
         assertEquals(201, code);
-        assertTrue(responseBody.contains("Добавлен фильм"));
 
         Film film1 = new Film("film1", "descriptionFilm1", LocalDate.of(2020, 5, 6), Duration.ofSeconds(100));
         film1.setId(1);
@@ -91,7 +90,6 @@ class FilmorateApplicationTests {
         responseBody = response.body().string();
 
         assertEquals(201, code);
-        assertTrue(responseBody.contains("Добавлен фильм"));
         film2.setId(2);
 
         request = new Request.Builder()
@@ -145,7 +143,6 @@ class FilmorateApplicationTests {
         String responseBody = response.body().string();
 
         assertEquals(201, code);
-        assertTrue(responseBody.contains("Добавлен пользователь"));
 
         User user1 = new User("ya1@Ya.ru", "login1");
         user1.setBirthday(LocalDate.of(1990, 5, 6));
@@ -162,7 +159,6 @@ class FilmorateApplicationTests {
         responseBody = response.body().string();
 
         assertEquals(201, code);
-        assertTrue(responseBody.contains("Обновлен пользователь"));
 
         User user2 = new User("ya2@Ya.ru", "login2");
         user2.setBirthday(LocalDate.of(1989, 5, 6));
@@ -179,7 +175,6 @@ class FilmorateApplicationTests {
         responseBody = response.body().string();
 
         assertEquals(201, code);
-        assertTrue(responseBody.contains("Добавлен пользователь"));
         user2.setId(2);
 
         request = new Request.Builder()

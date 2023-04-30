@@ -59,7 +59,7 @@ public class FilmController {
                     films.add(i, film);
                     isOk = true;
                     log.info("Обновлен фильм: {} ", film);
-                    return new ResponseEntity<>(new AppMessageOk(201,
+                    return new ResponseEntity<>(new AppMessageOk(200,
                             "Обновлен фильм:", film), HttpStatus.valueOf(201));
                 }
             }
@@ -77,7 +77,7 @@ public class FilmController {
         films.add(film);
         id++;
         log.info("Фильм для обновления не найден. Добавлен фильм: {} ", film);
-        return new ResponseEntity<>(film, HttpStatus.valueOf(200));
+        return new ResponseEntity<>(film, HttpStatus.valueOf(201));
 
     }
 
