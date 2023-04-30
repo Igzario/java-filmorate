@@ -76,7 +76,7 @@ public class UserController {
         users.add(user);
         id++;
         log.info("Пользователь для обновления не найден. Добавлен пользователь: {} ", user);
-        return new ResponseEntity<>( user, HttpStatus.valueOf(200));
+        return new ResponseEntity<>(user, HttpStatus.valueOf(200));
     }
 
     private boolean validation(User user) {
