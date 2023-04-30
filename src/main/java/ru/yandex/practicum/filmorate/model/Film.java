@@ -2,7 +2,6 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.time.Duration;
 import java.time.LocalDate;
 
 @Data
@@ -17,7 +16,7 @@ public class Film {
     @NotNull(message = "Ошибка ввода - releaseDate")
     private final LocalDate releaseDate;
     @NotNull(message = "Ошибка ввода - duration")
-    private final Duration duration;
+    private final int duration;
 
     @Override
     public String toString() {

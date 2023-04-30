@@ -71,7 +71,7 @@ public class UserController {
             }
         }
         log.error("Не найден User для обновления");
-        return new ResponseEntity<>("Не найден User для обновления", HttpStatus.valueOf(500));
+        return new ResponseEntity<>(user, HttpStatus.valueOf(500));
     }
 
     private boolean validation(User user) {

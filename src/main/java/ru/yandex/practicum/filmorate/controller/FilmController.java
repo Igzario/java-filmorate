@@ -72,7 +72,7 @@ public class FilmController {
             }
         }
         log.error("Не найден Film для обновления");
-        return new ResponseEntity<>("Не найден Film для обновления", HttpStatus.valueOf(500));
+        return new ResponseEntity<>(film, HttpStatus.valueOf(500));
     }
 
     private boolean validation(Film film) {
@@ -82,7 +82,7 @@ public class FilmController {
             return false;
         } else if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             return false;
-        } else if (film.getDuration().getSeconds() <= 0) {
+        } else if (film.getDuration() <= 0) {
             return false;
         }
         return true;

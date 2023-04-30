@@ -43,7 +43,7 @@ class FilmorateApplicationTests {
 
     @Test
     public void contextLoadsFilm() throws IOException, InterruptedException {
-        Film film = new Film("film", "descriptionFilm", LocalDate.of(2020, 5, 6), Duration.ofSeconds(100));
+        Film film = new Film("film", "descriptionFilm", LocalDate.of(2020, 5, 6), 100);
         String jsonFilm = gson.toJson(film);
 
         MediaType mediaType = MediaType.parse("application/json");
@@ -59,7 +59,7 @@ class FilmorateApplicationTests {
 
         assertEquals(201, code);
 
-        Film film1 = new Film("film1", "descriptionFilm1", LocalDate.of(2020, 5, 6), Duration.ofSeconds(100));
+        Film film1 = new Film("film1", "descriptionFilm1", LocalDate.of(2020, 5, 6), 100);
         film1.setId(1);
         jsonFilm = gson.toJson(film1);
         body = RequestBody.create(mediaType, jsonFilm);
@@ -74,7 +74,7 @@ class FilmorateApplicationTests {
 
         assertEquals(200, code);
 
-        Film film2 = new Film("film2", "descriptionFilm2", LocalDate.of(2020, 5, 6), Duration.ofSeconds(100));
+        Film film2 = new Film("film2", "descriptionFilm2", LocalDate.of(2020, 5, 6), 100);
         film2.setId(5);
         jsonFilm = gson.toJson(film2);
         body = RequestBody.create(mediaType, jsonFilm);
@@ -108,7 +108,8 @@ class FilmorateApplicationTests {
 
             final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
             LocalDate releaseDate = LocalDate.parse((String) map.get("releaseDate"), formatter);
-            Duration duration = Duration.parse((CharSequence) map.get("duration"));
+            double d = (double) map.get("duration");
+            int duration = (int) d;
 
             film3 = new Film(name, description, releaseDate, duration);
 
