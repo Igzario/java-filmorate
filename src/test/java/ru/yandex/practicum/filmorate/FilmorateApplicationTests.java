@@ -73,7 +73,7 @@ class FilmorateApplicationTests {
         code = response.code();
         responseBody = response.body().string();
 
-        assertEquals(201, code);
+        assertEquals(200, code);
         assertTrue(responseBody.contains("Обновлен фильм"));
 
         Film film2 = new Film("film2", "descriptionFilm2", LocalDate.of(2020, 5, 6), Duration.ofSeconds(100));
@@ -158,7 +158,7 @@ class FilmorateApplicationTests {
         code = response.code();
         responseBody = response.body().string();
 
-        assertEquals(201, code);
+        assertEquals(200, code);
 
         User user2 = new User("ya2@Ya.ru", "login2");
         user2.setBirthday(LocalDate.of(1989, 5, 6));
