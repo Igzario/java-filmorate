@@ -58,8 +58,7 @@ public class UserController {
                     users.remove(user1);
                     users.add(i, user);
                     log.info("Обновлен пользователь: {} ", user);
-                    return new ResponseEntity<>(new AppMessageOk(200,
-                            "Обновлен пользователь:", user), HttpStatus.valueOf(201));
+                    return new ResponseEntity<>(user, HttpStatus.valueOf(200));
                 }
             }
         } catch (Exception exception) {
@@ -72,11 +71,8 @@ public class UserController {
                 return new ResponseEntity<>(new AppMessageError(500,error), HttpStatus.valueOf(500));
             }
         }
-        user.setId(id);
-        users.add(user);
-        id++;
-        log.info("Пользователь для обновления не найден. Добавлен пользователь: {} ", user);
-        return new ResponseEntity<>(user, HttpStatus.valueOf(201));
+        log.error("Не найден User для обновления");
+        return new ResponseEntity<>("Не найден User для обновления", HttpStatus.valueOf(500));
     }
 
     private boolean validation(User user) {

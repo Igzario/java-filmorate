@@ -59,8 +59,7 @@ public class FilmController {
                     films.add(i, film);
                     isOk = true;
                     log.info("Обновлен фильм: {} ", film);
-                    return new ResponseEntity<>(new AppMessageOk(200,
-                            "Обновлен фильм:", film), HttpStatus.valueOf(201));
+                    return new ResponseEntity<>(film, HttpStatus.valueOf(200));
                 }
             }
         } catch (Exception exception) {
@@ -73,12 +72,8 @@ public class FilmController {
                 return new ResponseEntity<>(new AppMessageError(500, error), HttpStatus.valueOf(500));
             }
         }
-        film.setId(id);
-        films.add(film);
-        id++;
-        log.info("Фильм для обновления не найден. Добавлен фильм: {} ", film);
-        return new ResponseEntity<>(film, HttpStatus.valueOf(201));
-
+        log.error("Не найден Film для обновления");
+        return new ResponseEntity<>("Не найден Film для обновления", HttpStatus.valueOf(500));
     }
 
     private boolean validation(Film film) {
