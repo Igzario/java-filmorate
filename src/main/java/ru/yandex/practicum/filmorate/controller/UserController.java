@@ -42,8 +42,7 @@ public class UserController {
                 return new ResponseEntity<>(new AppMessageError(500,error), HttpStatus.valueOf(500));
             }
         }
-        return new ResponseEntity(new AppMessageOk(201,
-                "Добавлен пользователь: ", user), HttpStatus.valueOf(201));
+        return new ResponseEntity(user, HttpStatus.valueOf(201));
     }
 
 
@@ -77,8 +76,7 @@ public class UserController {
         users.add(user);
         id++;
         log.info("Пользователь для обновления не найден. Добавлен пользователь: {} ", user);
-        return new ResponseEntity<>(new AppMessageOk(201,
-                "Пользователь для обновления не найден. Добавлен пользователь: ", user), HttpStatus.valueOf(201));
+        return new ResponseEntity<>( user, HttpStatus.valueOf(200));
     }
 
     private boolean validation(User user) {

@@ -42,8 +42,7 @@ public class FilmController {
                 return new ResponseEntity<>(new AppMessageError(500, error), HttpStatus.valueOf(500));
             }
         }
-        return new ResponseEntity(new AppMessageOk(201,
-                "Добавлен фильм: ", film), HttpStatus.valueOf(201));
+        return new ResponseEntity(film, HttpStatus.valueOf(201));
     }
 
     @PutMapping("/films")
@@ -78,8 +77,7 @@ public class FilmController {
         films.add(film);
         id++;
         log.info("Фильм для обновления не найден. Добавлен фильм: {} ", film);
-        return new ResponseEntity<>(new AppMessageOk(201,
-                "Фильм для обновления не найден. Добавлен фильм: ", film), HttpStatus.valueOf(201));
+        return new ResponseEntity<>(film, HttpStatus.valueOf(200));
 
     }
 
