@@ -5,7 +5,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.message.AppMessageError;
-import ru.yandex.practicum.filmorate.message.AppMessageOk;
 import ru.yandex.practicum.filmorate.model.Film;
 import java.time.LocalDate;
 import java.util.LinkedList;
