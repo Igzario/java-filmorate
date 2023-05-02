@@ -1,21 +1,18 @@
 package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
 public class Film {
     private int id;
-    @NotNull(message = "Ошибка ввода - name")
-    @NotBlank(message = "Ошибка ввода - name")
+    @NotBlank(message = "Ошибка ввода - name: пустое поле")
     private final String name;
-    @NotNull(message = "Ошибка ввода - description")
-    @NotBlank(message = "Ошибка ввода - descriptio")
+    @Size(max = 200, min = 1, message = "Длина описания больше 200 символов")
     private final String description;
-    @NotNull(message = "Ошибка ввода - releaseDate")
+    @NotNull
     private final LocalDate releaseDate;
-    @NotNull(message = "Ошибка ввода - duration")
+    @Positive
     private final int duration;
 
     @Override

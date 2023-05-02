@@ -1,17 +1,19 @@
 package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotNull;
+
+import javax.validation.constraints.*;
 import java.time.LocalDate;
 
 @Data
 public class User {
     private int id;
-    @Email(message = "Ошибка ввода - Email, попробуйте еще раз")
+    @NotEmpty(message = "Ошибка ввода - Email: null или empty")
+    @Email(message = "Ошибка ввода - Email: not email format")
     private final String email;
+    @Pattern(regexp = "[a-zA-Z0-9]{1,100}", message="Ошибка ввода - login")
     private final String login;
     private String name;
-    @NotNull(message = "Ошибка ввода - birthday, попробуйте еще раз")
+    @PastOrPresent(message = "Ошибка ввода - birthday")
     private LocalDate birthday;
 
     @Override
