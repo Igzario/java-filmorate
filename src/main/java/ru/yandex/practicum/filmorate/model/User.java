@@ -9,7 +9,7 @@ public class User {
     @NotEmpty(message = "Ошибка ввода - Email: null или empty")
     @Email(message = "Ошибка ввода - Email: not email format")
     private final String email;
-    @Pattern(regexp = "[a-zA-Z0-9]{1,100}", message="Ошибка ввода - login")
+    @Pattern(regexp = "[a-zA-Z0-9]{1,100}", message = "Ошибка ввода - login")
     private final String login;
     private String name;
     @PastOrPresent(message = "Ошибка ввода - birthday")
