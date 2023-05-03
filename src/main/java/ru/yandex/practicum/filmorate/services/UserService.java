@@ -17,7 +17,7 @@ public class UserService {
     public ResponseEntity userPost(User user) {
         try {
             user.setId(id);
-            if (user.getName().isBlank()) {
+            if (user.getName() == null || user.getName().isBlank()) {
                 user.setName(user.getLogin());
             }
             users.add(user);
