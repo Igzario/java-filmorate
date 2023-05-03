@@ -11,13 +11,13 @@ import java.util.List;
 @Slf4j
 public class UserService {
     @Getter
-    List<User> users = new ArrayList<>();
+    private final List<User> users = new ArrayList<>();
     private int id = 1;
 
     public ResponseEntity userPost(User user) {
         try {
             user.setId(id);
-            if (user.getName() == null) {
+            if (user.getName().isBlank()) {
                 user.setName(user.getLogin());
             }
             users.add(user);

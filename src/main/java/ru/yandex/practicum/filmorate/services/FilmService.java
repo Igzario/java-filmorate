@@ -19,7 +19,7 @@ public class FilmService {
     private List<Film> films = new LinkedList<>();
     private int id = 1;
 
-    public ResponseEntity filmPost(Film film) throws ValidationException {
+    public ResponseEntity filmPost(Film film) {
         try {
             if (!validation(film)) {
                 throw new ValidationException();
