@@ -1,5 +1,5 @@
 package ru.yandex.practicum.filmorate.services;
-import lombok.Getter;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -10,16 +10,17 @@ import java.util.List;
 
 @Slf4j
 public class UserService {
-    @Getter
     private final List<User> users = new ArrayList<>();
     private int id = 1;
+
+    public List<User> getUsers() {
+        return users;
+    }
 
     public ResponseEntity userPost(User user) {
         try {
             user.setId(id);
-            if (user.getName() == null || user.getName().isBlank()) {
-                user.setName(user.getLogin());
-            }
+            validName(user);
             users.add(user);
             id++;
             log.info("Добавлен пользователь: {} ", user);
@@ -33,6 +34,7 @@ public class UserService {
 
     public ResponseEntity userPut(User user) {
         try {
+            validName(user);
             for (User user1 : users) {
                 if (user.getId() == user1.getId()) {
                     int i = users.indexOf(user1);
@@ -49,5 +51,11 @@ public class UserService {
         }
         log.error("Не найден User для обновления");
         return new ResponseEntity<>(user, HttpStatus.valueOf(500));
+    }
+
+    private void validName(User user) {
+        if (user.getName() == null || user.getName().isBlank()) {
+            user.setName(user.getLogin());
+        }
     }
 }

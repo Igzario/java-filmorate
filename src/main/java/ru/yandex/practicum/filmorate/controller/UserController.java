@@ -12,7 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 public class UserController {
-    final UserService userService = new UserService();
+    private final UserService userService = new UserService();
 
     @GetMapping("/users")
     public List<User> userTake() {
@@ -23,7 +23,6 @@ public class UserController {
     public ResponseEntity userGive(@Valid @RequestBody User user) {
         return userService.userPost(user);
     }
-
 
     @PutMapping("/users")
     public ResponseEntity userUpdate(@Valid @RequestBody User user) {

@@ -12,8 +12,7 @@ import java.util.List;
 @Slf4j
 @RestController
 public class FilmController {
-
-    final FilmService filmService = new FilmService();
+    private final FilmService filmService = new FilmService();
 
     @GetMapping("/films")
     public List getFilms() {

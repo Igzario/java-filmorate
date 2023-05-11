@@ -1,13 +1,10 @@
 package ru.yandex.practicum.filmorate.services;
-
-import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
 import ru.yandex.practicum.filmorate.message.AppMessageError;
 import ru.yandex.practicum.filmorate.model.Film;
-
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,9 +12,12 @@ import java.util.List;
 
 @Slf4j
 public class FilmService {
-    @Getter
-    private List<Film> films = new LinkedList<>();
+    private final List<Film> films = new LinkedList<>();
     private int id = 1;
+
+    public List<Film> getFilms() {
+        return films;
+    }
 
     public ResponseEntity filmPost(Film film) {
         try {
