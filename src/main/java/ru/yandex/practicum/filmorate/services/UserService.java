@@ -1,5 +1,4 @@
 package ru.yandex.practicum.filmorate.services;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,7 +53,12 @@ public class UserService {
     }
 
     private void validName(User user) {
-        if (user.getName() == null || user.getName().isBlank()) {
+        try {
+            if (user.getName().isBlank()) {
+                user.setName(user.getLogin());
+            }
+        }
+        catch (NullPointerException e){
             user.setName(user.getLogin());
         }
     }

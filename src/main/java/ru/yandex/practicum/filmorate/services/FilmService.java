@@ -9,12 +9,10 @@ import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
 
-
 @Slf4j
 public class FilmService {
     private final List<Film> films = new LinkedList<>();
     private int id = 1;
-
     public List<Film> getFilms() {
         return films;
     }
@@ -70,7 +68,7 @@ public class FilmService {
     }
 
     private boolean validation(Film film) {
-        if (film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
+        if (film.getReleaseDate() != null && film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
             return false;
         }
         return true;

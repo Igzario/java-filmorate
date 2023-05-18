@@ -2,15 +2,12 @@ package ru.yandex.practicum.filmorate;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-// Не поправил
-// Чтобы не отлавливать руками такие вещи (плюс всякие отступы и пробелы), используй комбинацию Ctrl+Alt+L- я не знаю почему,
-// у меня там один таб
-
 //Если name=null, что выдаст выражение user.getName().isBlank()? - будет npe, но там же для этого есть проверка на null
 // и проблем с передачей туда null не возникает
-
-// Лучше прописать отдельный метод валидации имени и использовать его потом везде - да вот он изначально был
-// метод валидации, потом я его убрал...
+// https://ru.stackoverflow.com/questions/712136/%D0%92-%D1%87%D1%91%D0%BC-%D0%BE%D1%82%D0%BB%D0%B8%D1%87%D0%B8%D0%B5-isblank-vs-isempty
+// да, я читал описание когда искал как лучше сделать, но в реальности как бы я не делал получается NPE...
+// по логике должен остаться только user.getName().isBlank(), но так не работает...  применение .isBlank() к полю
+// null приводит к NPE... может конечно я что-то не так делаю
 
 @SpringBootApplication
 public class FilmorateApplication {

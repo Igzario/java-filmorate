@@ -10,7 +10,6 @@ public class Film {
     private final String name;
     @Size(max = 200, min = 1, message = "Длина описания больше 200 символов")
     private final String description;
-    @NotNull
     private final LocalDate releaseDate;
     @Positive
     private final int duration;
