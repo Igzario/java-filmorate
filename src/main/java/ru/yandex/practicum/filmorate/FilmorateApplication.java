@@ -8,7 +8,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 // да, я читал описание когда искал как лучше сделать, но в реальности как бы я не делал получается NPE...
 // по логике должен остаться только user.getName().isBlank(), но так не работает...  применение .isBlank() к полю
 // null приводит к NPE... может конечно я что-то не так делаю
-
+//
 @SpringBootApplication
 public class FilmorateApplication {
     public static void main(String[] args) {
