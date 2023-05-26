@@ -2,9 +2,11 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.HashMap;
 
 @Data
 public class Film {
+    private final HashMap<Integer, String> likes = new HashMap();
     private int id;
     @NotBlank(message = "Ошибка ввода - name: пустое поле")
     private final String name;
