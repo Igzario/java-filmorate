@@ -1,15 +1,17 @@
 package ru.yandex.practicum.filmorate.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Data
 public class User {
     @JsonIgnore
-    private final Set<User> friends = new HashSet<>();
+    private final Set<User> friends = new LinkedHashSet<>();
     private int id;
     @NotEmpty(message = "Ошибка ввода - Email: null или empty")
     @Email(message = "Ошибка ввода - Email: not email format")
@@ -29,14 +31,5 @@ public class User {
                 ", name='" + name + '\'' +
                 ", birthday=" + birthday +
                 '}';
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        User user = (User) o;
-        if (email != null ? !email.equals(user.email) : user.email != null) return false;
-        return login != null ? login.equals(user.login) : user.login == null;
     }
 }

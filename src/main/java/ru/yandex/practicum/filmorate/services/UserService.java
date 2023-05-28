@@ -1,13 +1,15 @@
 package ru.yandex.practicum.filmorate.services;
+
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestBody;
-import ru.yandex.practicum.filmorate.exception.UserNotFoundExceptinon;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.storage.user.UserStorage;
+
 import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.Set;
@@ -22,7 +24,7 @@ public class UserService {
         this.inMemoryUserStorage = inMemoryUserStorage;
     }
 
-    public ResponseEntity addFriend(long id, long friendId) throws UserNotFoundExceptinon {
+    public ResponseEntity addFriend(long id, long friendId) throws EntityNotFoundException {
         final User user = inMemoryUserStorage.getUser(id);
         final User userFriend = inMemoryUserStorage.getUser(friendId);
         if (user != null && userFriend != null) {
@@ -30,12 +32,12 @@ public class UserService {
             user.getFriends().add(userFriend);
             userFriend.getFriends().add(user);
         } else {
-            throw new UserNotFoundExceptinon();
+            throw new EntityNotFoundException("Пользователь");
         }
         return new ResponseEntity<>(user, HttpStatus.valueOf(200));
     }
 
-    public ResponseEntity deleteFriend(long id, long friendId) throws UserNotFoundExceptinon {
+    public ResponseEntity deleteFriend(long id, long friendId) throws EntityNotFoundException {
         final User user = inMemoryUserStorage.getUser(id);
         final User userFriend = inMemoryUserStorage.getUser(friendId);
         if (user != null && userFriend != null) {
@@ -43,22 +45,22 @@ public class UserService {
             user.getFriends().remove(friendId);
             userFriend.getFriends().remove(id);
         } else {
-            throw new UserNotFoundExceptinon();
+            throw new EntityNotFoundException("Пользователь");
         }
-        return new ResponseEntity<>(user, HttpStatus.valueOf(204));
+        return new ResponseEntity<>(user, HttpStatus.valueOf(200));
     }
 
-    public ResponseEntity getFriendsForId(long id) throws UserNotFoundExceptinon {
+    public ResponseEntity getFriendsForId(long id) throws EntityNotFoundException {
         final User user = inMemoryUserStorage.getUser(id);
         if (user != null) {
             log.info("Отправлен список друзей пользователя: {}", user);
             return new ResponseEntity<>(user.getFriends(), HttpStatus.valueOf(200));
         } else {
-            throw new UserNotFoundExceptinon();
+            throw new EntityNotFoundException("Пользователь");
         }
     }
 
-    public ResponseEntity getGeneralFriends(long id, long friendId) throws UserNotFoundExceptinon {
+    public ResponseEntity getGeneralFriends(long id, long friendId) throws EntityNotFoundException {
         final User user = inMemoryUserStorage.getUser(id);
         final User userFriend = inMemoryUserStorage.getUser(friendId);
         if (user != null && userFriend != null) {
@@ -71,7 +73,7 @@ public class UserService {
             }
             return new ResponseEntity<>(friends, HttpStatus.valueOf(200));
         } else {
-            throw new UserNotFoundExceptinon();
+            throw new EntityNotFoundException("Пользователь");
         }
     }
 
@@ -79,12 +81,12 @@ public class UserService {
         return inMemoryUserStorage.userAdd(user);
     }
 
-    public ResponseEntity userGet(long id) throws UserNotFoundExceptinon {
+    public ResponseEntity userGet(long id) throws EntityNotFoundException {
         final User user = inMemoryUserStorage.getUser(id);
         if (user != null) {
             return new ResponseEntity<>(user, HttpStatus.valueOf(200));
         }
-        throw new UserNotFoundExceptinon();
+        throw new EntityNotFoundException("Пользователь");
     }
 
     public ResponseEntity usersGet() {
