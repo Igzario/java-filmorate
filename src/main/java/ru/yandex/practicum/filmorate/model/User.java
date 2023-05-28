@@ -32,4 +32,13 @@ public class User {
                 ", birthday=" + birthday +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        if (email != null ? !email.equals(user.email) : user.email != null) return false;
+        return login != null ? login.equals(user.login) : user.login == null;
+    }
 }

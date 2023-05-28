@@ -28,4 +28,13 @@ public class Film {
                 ", duration=" + duration +
                 '}';
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Film film = (Film) o;
+        if (name != null ? !name.equals(film.name) : film.name != null) return false;
+        return releaseDate != null ? releaseDate.equals(film.releaseDate) : film.releaseDate == null;
+    }
 }
