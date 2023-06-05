@@ -2,6 +2,7 @@ package ru.yandex.practicum.filmorate.model;
 import lombok.Data;
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.List;
 
 @Data
 public class Film {
@@ -13,6 +14,9 @@ public class Film {
     private final LocalDate releaseDate;
     @Positive
     private final int duration;
+    private final String mpa;
+    private final List genres;
+
 
     @Override
     public String toString() {
