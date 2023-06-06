@@ -17,6 +17,8 @@ public class Film {
     private final LocalDate releaseDate;
     @Positive
     private final int duration;
+    private final
+
 
     @Override
     public String toString() {

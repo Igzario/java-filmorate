@@ -53,4 +53,4 @@ ALTER TABLE "Likes" ADD FOREIGN KEY ("user_id") REFERENCES Users ("user_id");
 
 ALTER TABLE "Films" ADD FOREIGN KEY ("genre_id") REFERENCES "Genre" ("genre_id");
 
-ALTER TABLE "Films" ADD FOREIGN KEY ("rating_id") REFERENCES Mpa ("rating_id");
+ALTER TABLE "Films" ADD FOREIGN KEY ("rating_id") REFERENCES Mpa (mpa_id);
