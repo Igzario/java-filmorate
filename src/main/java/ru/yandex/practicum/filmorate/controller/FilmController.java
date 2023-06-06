@@ -1,6 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +12,7 @@ import ru.yandex.practicum.filmorate.services.FilmService;
 import javax.validation.Valid;
 import java.util.List;
 
-@Data
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 public class FilmController {
@@ -34,7 +34,7 @@ public class FilmController {
     }
 
     @GetMapping("/films/{id}")
-    public ResponseEntity filmGet(@PathVariable long id) throws EntityNotFoundException {
+    public ResponseEntity getFilm(@PathVariable long id) throws EntityNotFoundException {
         return filmService.filmGet(id);
     }
 
@@ -44,12 +44,12 @@ public class FilmController {
     }
 
     @PostMapping("/films")
-    public ResponseEntity filmAdd(@Valid @RequestBody Film film) throws ValidationException {
+    public ResponseEntity addFilm(@Valid @RequestBody Film film) throws ValidationException {
         return filmService.filmAdd(film);
     }
 
     @PutMapping("/films")
-    public ResponseEntity filmRefresh(@Valid @RequestBody Film film) throws ValidationException {
+    public ResponseEntity updateFilm(@Valid @RequestBody Film film) throws ValidationException {
         return filmService.filmRefresh(film);
     }
 }

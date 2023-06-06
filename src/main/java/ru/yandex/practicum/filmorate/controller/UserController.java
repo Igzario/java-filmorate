@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.controller;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -11,17 +12,13 @@ import ru.yandex.practicum.filmorate.services.UserService;
 
 import javax.validation.Valid;
 
+@RequiredArgsConstructor
 @Slf4j
 @RestController
 @Component
 public class UserController {
 
     private final UserService userService;
-
-    @Autowired
-    public UserController(UserService userService) {
-        this.userService = userService;
-    }
 
     @PutMapping("/users/{id}/friends/{friendId}")
     public ResponseEntity addFriend(@PathVariable int id, @PathVariable int friendId) throws EntityNotFoundException {
@@ -44,22 +41,22 @@ public class UserController {
     }
 
     @GetMapping("/users/{id}")
-    public ResponseEntity userGet(@PathVariable long id) throws EntityNotFoundException {
+    public ResponseEntity getUser(@PathVariable long id) throws EntityNotFoundException {
         return userService.userGet(id);
     }
 
     @GetMapping("/users")
-    public ResponseEntity usersGet() {
+    public ResponseEntity getUsers() {
         return userService.usersGet();
     }
 
     @PostMapping("/users")
-    public ResponseEntity userAdd(@Valid @RequestBody User user) {
+    public ResponseEntity addUser(@Valid @RequestBody User user) {
         return userService.userAdd(user);
     }
 
     @PutMapping("/users")
-    public ResponseEntity userUpdate(@Valid @RequestBody User user) {
+    public ResponseEntity updateUser(@Valid @RequestBody User user) {
         return userService.userUpdate(user);
     }
 }
