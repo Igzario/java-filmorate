@@ -1,14 +1,16 @@
 package ru.yandex.practicum.filmorate;
+
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-//Если name=null, что выдаст выражение user.getName().isBlank()? - будет npe, но там же для этого есть проверка на null
-// и проблем с передачей туда null не возникает
-// https://ru.stackoverflow.com/questions/712136/%D0%92-%D1%87%D1%91%D0%BC-%D0%BE%D1%82%D0%BB%D0%B8%D1%87%D0%B8%D0%B5-isblank-vs-isempty
-// да, я читал описание когда искал как лучше сделать, но в реальности как бы я не делал получается NPE...
-// по логике должен остаться только user.getName().isBlank(), но так не работает...  применение .isBlank() к полю
-// null приводит к NPE... может конечно я что-то не так делаю
-//
+//Написать ниже не могу, а есть необходимость прописывать методы toString и equals? - toString да, т.к. есть места
+//лог пишется User и Film, и если не использовать toString то будет ошибка с записью коллекции в лог...
+//log.info("Отправлен список общих друзей пользователей: {} и {} ", user, userFriend); - вот здесь например
+// a equals исполюхуется в тестах
+
+//private final Set<User> friends = new LinkedHashSet<>(); - поменял на LinkedHashSet, т.к. постман тесты не проходятся
+// если порядок не соблюден
+
 @SpringBootApplication
 public class FilmorateApplication {
     public static void main(String[] args) {
