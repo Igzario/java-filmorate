@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="fa821fdb-f7d2-4f63-bb28-3de51cac3183" name="Changes" comment="Filmorate - create database" />
+    <list default="true" id="fa821fdb-f7d2-4f63-bb28-3de51cac3183" name="Changes" comment="Filmorate - create database">
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/db/FILMORATE.mv.db" beforeDir="false" afterPath="$PROJECT_DIR$/db/FILMORATE.mv.db" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -179,7 +183,7 @@
       <workItem from="1686395648043" duration="3000" />
       <workItem from="1686395688368" duration="2561000" />
       <workItem from="1686396218468" duration="1345000" />
-      <workItem from="1686397611081" duration="355000" />
+      <workItem from="1686397611081" duration="1061000" />
     </task>
     <task id="LOCAL-00001" summary="Filmorate - create database">
       <created>1686397042725</created>
@@ -216,7 +220,14 @@
       <option name="project" value="LOCAL" />
       <updated>1686396504014</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Filmorate - create database">
+      <created>1686398353631</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1686398353631</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
