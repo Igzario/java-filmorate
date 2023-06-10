@@ -156,8 +156,8 @@ public class FilmDbStorage implements FilmStorage {
                 "select F.FILM_ID, COUNT(LIKE_ID) AS many from  FILMS F LEFT JOIN LIKES L on F.FILM_ID = L.FILM_ID GROUP BY F.FILM_ID ORDER BY many DESC LIMIT ?", count);
 
         while (userRows.next()) {
-            int film_id = Integer.parseInt(userRows.getString("FILM_ID"));
-            Film film = getFilm(film_id);
+            int filmId = Integer.parseInt(userRows.getString("FILM_ID"));
+            Film film = getFilm(filmId);
             popularFilms.add(film);
         }
 
