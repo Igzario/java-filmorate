@@ -77,7 +77,7 @@ public class UserDbStorage implements UserStorage {
 
     @Override
     public User getUser(long id) throws EntityNotFoundException {
-        String user_id = null;
+        String userId = null;
         String name = null;
         String email = null;
         String login = null;
@@ -88,7 +88,7 @@ public class UserDbStorage implements UserStorage {
                         "select * from USERS WHERE USER_ID = ?", id);
 
         if (userRows.next()) {
-            user_id = userRows.getString("USER_ID");
+            userId = userRows.getString("USER_ID");
             name = userRows.getString("NAME");
             email = userRows.getString("EMAIL");
             login = userRows.getString("LOGIN");
@@ -102,7 +102,7 @@ public class UserDbStorage implements UserStorage {
         if (birthday != null) {
             user.setBirthday(LocalDate.parse(birthday, formatter));
         }
-        user.setId(Integer.parseInt(user_id));
+        user.setId(Integer.parseInt(userId));
         return user;
     }
 
