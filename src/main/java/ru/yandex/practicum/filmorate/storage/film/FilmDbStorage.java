@@ -100,7 +100,7 @@ public class FilmDbStorage implements FilmStorage {
 
     @Override
     public Film getFilm(long id) throws EntityNotFoundException {
-        String film_id = null;
+        String filmId = null;
         String name = null;
         String description = null;
         String releaseDate = null;
@@ -118,7 +118,7 @@ public class FilmDbStorage implements FilmStorage {
                 "select F.FILM_ID,M.MPA_ID,F.NAME as FILM_NAME,DESCRIPTION,RELIASEDATE,DURATION, M.NAME as MPA_NAME from FILMS as f left join  MPA M on M.MPA_ID = f.MPA_ID WHERE F.FILM_ID = ? GROUP BY f.FILM_ID", id);
 
         if (userRows.next()) {
-            film_id = userRows.getString("FILM_ID");
+            filmId = userRows.getString("FILM_ID");
             name = userRows.getString("FILM_NAME");
             description = userRows.getString("DESCRIPTION");
             releaseDate = userRows.getString("RELIASEDATE");
@@ -129,7 +129,7 @@ public class FilmDbStorage implements FilmStorage {
             mpaName = userRows.getString("MPA_NAME");
             mpa = new Mpa(mpaId, mpaName);
 
-            SqlRowSet userRows2 = jdbcTemplate.queryForRowSet("SELECT FG.FILM_ID, FG.GENRE_ID, G.NAME as GENRE_NAME FROM FILMSGENRE as FG  LEFT JOIN GENRES AS G ON FG.GENRE_ID = G.GENRE_ID WHERE FILM_ID = ? GROUP BY FG.FILM_ID, FG.GENRE_ID", film_id);
+            SqlRowSet userRows2 = jdbcTemplate.queryForRowSet("SELECT FG.FILM_ID, FG.GENRE_ID, G.NAME as GENRE_NAME FROM FILMSGENRE as FG  LEFT JOIN GENRES AS G ON FG.GENRE_ID = G.GENRE_ID WHERE FILM_ID = ? GROUP BY FG.FILM_ID, FG.GENRE_ID", filmId);
             while (userRows2.next()) {
                 genreId = Integer.parseInt(Objects.requireNonNull(userRows2.getString("GENRE_ID")));
                 genreName = userRows2.getString("GENRE_NAME");
@@ -142,7 +142,7 @@ public class FilmDbStorage implements FilmStorage {
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Film film = new Film(name, description, LocalDate.parse(releaseDate, formatter), Integer.parseInt(duration), mpa);
-        film.setId(Integer.parseInt(film_id));
+        film.setId(Integer.parseInt(filmId));
 
         film.setGenres(genres);
         log.info("Отправлен фильм: {} ", film);
