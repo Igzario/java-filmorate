@@ -1,14 +1,16 @@
 package ru.yandex.practicum.filmorate.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
 import javax.validation.constraints.*;
 import java.time.LocalDate;
-import java.util.HashMap;
+import java.util.*;
 
 @Data
 public class Film {
-    private final HashMap<Integer, String> likes = new HashMap();
+    @JsonIgnore
+    private HashMap<Integer, String> likes = new HashMap();
     private int id;
     @NotBlank(message = "Ошибка ввода - name: пустое поле")
     private final String name;
@@ -17,8 +19,8 @@ public class Film {
     private final LocalDate releaseDate;
     @Positive
     private final int duration;
-    private final
-
+    private List<Genre> genres = new ArrayList<>();
+    private final Mpa mpa;
 
     @Override
     public String toString() {

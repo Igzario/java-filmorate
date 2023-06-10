@@ -27,4 +27,10 @@ public class ErrorHandler {
         log.error("500 " + "Не предвиденная ошибка: " + exception.getMessage());
         return new ResponseEntity<>(Map.of("Не предвиденная ошибка: ", exception.getMessage()), HttpStatus.valueOf(500));
     }
+
+    @ExceptionHandler
+    public ResponseEntity sqlException(final SqlException exception) {
+        log.error("500 " + "SQL ошибка: " + exception.getMessage());
+        return new ResponseEntity<>(Map.of("SQL ошибка: ", exception.getMessage()), HttpStatus.valueOf(500));
+    }
 }
