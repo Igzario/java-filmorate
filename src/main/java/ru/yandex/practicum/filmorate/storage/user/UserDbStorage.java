@@ -30,7 +30,6 @@ public class UserDbStorage implements UserStorage {
         Date date = Date.valueOf(user.getBirthday());
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO USERS (EMAIL, LOGIN, NAME, BIRTHDAY) values(?,?,?,?)";
-
         int rowsAffected = jdbcTemplate.update(connection -> {
             PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             preparedStatement.setString(1, user.getEmail());
