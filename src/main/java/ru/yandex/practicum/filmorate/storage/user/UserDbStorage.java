@@ -5,12 +5,15 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.jdbc.support.GeneratedKeyHolder;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
 import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
 import ru.yandex.practicum.filmorate.model.User;
 
 import java.sql.Date;
+import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -25,12 +28,26 @@ public class UserDbStorage implements UserStorage {
     public ResponseEntity userAdd(User user) {
         validName(user);
         Date date = Date.valueOf(user.getBirthday());
+        GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
+        String sql = "INSERT INTO USERS (EMAIL, LOGIN, NAME, BIRTHDAY) values(?,?,?,?)";
+        int rowsAffected = jdbcTemplate.update(connection -> {
+            PreparedStatement preparedStatement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            preparedStatement.setString(1, user.getEmail());
+            preparedStatement.setString(2, user.getLogin());
+            preparedStatement.setString(3, user.getName());
+            preparedStatement.setDate(4, date);
+            return preparedStatement;
+        }, generatedKeyHolder);
+
+        //Integer id = generatedKeyHolder.getKey().intValue(); не знаю почему но так тесты на гите не проходятся
+
         int id = 0;
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(
                 "select USER_ID as id from USERS WHERE EMAIL = ? AND LOGIN = ? AND NAME = ? AND BIRTHDAY = ? GROUP  BY id", user.getEmail(), user.getLogin(), user.getName(), date);
         if (userRows.next()) {
             id = Integer.parseInt(userRows.getString("USER_ID"));
         }
+
         user.setId(id);
         log.info("Добавлен пользователь: {} ", user);
         return new ResponseEntity<>(user, HttpStatus.valueOf(201));
