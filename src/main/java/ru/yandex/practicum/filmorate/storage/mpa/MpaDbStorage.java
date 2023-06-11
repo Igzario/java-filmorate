@@ -1,7 +1,8 @@
 package ru.yandex.practicum.filmorate.storage.mpa;
 
-import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.support.rowset.SqlRowSet;
 import org.springframework.stereotype.Component;
@@ -14,15 +15,14 @@ import java.util.Objects;
 
 @Slf4j
 @Component
-@Data
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class MpaDbStorage implements MpaStorage {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
     public Mpa getMpa(int id) throws EntityNotFoundException {
         Mpa mpa;
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet(
-                "select NAME from MPA WHERE MPA_ID = ?", id);
+        SqlRowSet userRows = jdbcTemplate.queryForRowSet("select NAME from MPA WHERE MPA_ID = ?", id);
         if (userRows.next()) {
             String nameMpa = userRows.getString("NAME");
             mpa = new Mpa(id, nameMpa);
@@ -35,8 +35,7 @@ public class MpaDbStorage implements MpaStorage {
     @Override
     public List<Mpa> getAllMpa() throws EntityNotFoundException {
         List<Mpa> mpaList = new ArrayList<>();
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet(
-                "select MPA_ID from MPA GROUP BY MPA_ID");
+        SqlRowSet userRows = jdbcTemplate.queryForRowSet("select MPA_ID from MPA GROUP BY MPA_ID");
         if (userRows.next()) {
             userRows.previous();
             while (userRows.next()) {

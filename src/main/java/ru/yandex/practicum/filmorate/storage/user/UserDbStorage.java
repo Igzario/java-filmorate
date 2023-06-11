@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.storage.user;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -19,13 +21,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
-@Data
 @Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class UserDbStorage implements UserStorage {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public ResponseEntity userAdd(User user) {
+    public ResponseEntity addUser(User user) {
         validName(user);
         Date date = Date.valueOf(user.getBirthday());
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
@@ -46,7 +48,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public List<User> usersGet() throws EntityNotFoundException {
+    public List<User> getUsers() throws EntityNotFoundException {
         List<User> users = new ArrayList<>();
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(
                 "select USER_ID AS ID from USERS GROUP BY ID");
@@ -59,7 +61,7 @@ public class UserDbStorage implements UserStorage {
     }
 
     @Override
-    public ResponseEntity userUpdate(User user) {
+    public ResponseEntity updateUser(User user) {
         validName(user);
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(
                 "select USER_ID AS ID from USERS WHERE USER_ID = ? GROUP BY ID", user.getId());
@@ -96,7 +98,9 @@ public class UserDbStorage implements UserStorage {
             throw new EntityNotFoundException("Пользователь");
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        User user = new User(email, login);
+        User user = new User();
+        user.setEmail(email);
+        user.setLogin(login);
         user.setName(name);
         if (birthday != null) {
             user.setBirthday(LocalDate.parse(birthday, formatter));
@@ -106,11 +110,11 @@ public class UserDbStorage implements UserStorage {
     }
 
     private void validName(User user) {
-        try {
-            if (user.getName().isBlank()) {
-                user.setName(user.getLogin());
-            }
-        } catch (NullPointerException e) {
+        if (user.getName() == null) {
+            user.setName(user.getLogin());
+            return;
+        }
+        if (user.getName().isBlank()) {
             user.setName(user.getLogin());
         }
     }

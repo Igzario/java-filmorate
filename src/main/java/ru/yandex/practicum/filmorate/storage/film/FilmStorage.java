@@ -11,15 +11,17 @@ import java.util.List;
 
 public interface FilmStorage {
 
-    ResponseEntity filmAdd(Film film) throws ValidationException, SqlException;
+    ResponseEntity addFilm(Film film) throws ValidationException, SqlException;
 
     List<Film> filmsGet() throws EntityNotFoundException;
 
-    ResponseEntity filmUpdate(Film film) throws ValidationException, SqlException, EntityNotFoundException;
+    ResponseEntity updateFilm(Film film) throws ValidationException, SqlException, EntityNotFoundException;
 
     Film getFilm(long id) throws EntityNotFoundException;
 
     ResponseEntity returnPopularFilms(int count) throws EntityNotFoundException;
 
     ResponseEntity addLike(Film film, User user);
+
+    ResponseEntity deleteLike(Film film, User user);
 }

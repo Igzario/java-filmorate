@@ -1,7 +1,9 @@
 package ru.yandex.practicum.filmorate.storage.film;
 
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.jdbc.core.JdbcTemplate;
@@ -14,6 +16,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.Genre;
 import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
+
 import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.Statement;
@@ -22,13 +25,13 @@ import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @Slf4j
-@Data
 @Component
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FilmDbStorage implements FilmStorage {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public ResponseEntity filmAdd(Film film) throws ValidationException {
+    public ResponseEntity addFilm(Film film) throws ValidationException {
         validation(film);
         Date date = Date.valueOf(film.getReleaseDate());
         Integer duration = Integer.parseInt(String.valueOf(film.getDuration()));
@@ -67,7 +70,7 @@ public class FilmDbStorage implements FilmStorage {
     }
 
     @Override
-    public ResponseEntity filmUpdate(Film film) throws ValidationException, EntityNotFoundException {
+    public ResponseEntity updateFilm(Film film) throws ValidationException, EntityNotFoundException {
         validation(film);
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(
                 "select FILM_ID AS ID from FILMS WHERE FILM_ID = ? GROUP BY ID", film.getId());
@@ -112,7 +115,7 @@ public class FilmDbStorage implements FilmStorage {
         Genre genre;
         String genreName;
         int genreId;
-        List<Genre> genres = new ArrayList();
+        Set<Genre> genres = new LinkedHashSet<>();
 
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(
                 "select F.FILM_ID,M.MPA_ID,F.NAME as FILM_NAME,DESCRIPTION,RELIASEDATE,DURATION, M.NAME as MPA_NAME from FILMS as f left join  MPA M on M.MPA_ID = f.MPA_ID WHERE F.FILM_ID = ? GROUP BY f.FILM_ID", id);
@@ -141,7 +144,12 @@ public class FilmDbStorage implements FilmStorage {
             throw new EntityNotFoundException("Фильм");
         }
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        Film film = new Film(name, description, LocalDate.parse(releaseDate, formatter), Integer.parseInt(duration), mpa);
+        Film film = new Film();
+        film.setName(name);
+        film.setDescription(description);
+        film.setReleaseDate(LocalDate.parse(releaseDate, formatter));
+        film.setDuration(Integer.parseInt(duration));
+        film.setMpa(mpa);
         film.setId(Integer.parseInt(filmId));
 
         film.setGenres(genres);
@@ -153,7 +161,7 @@ public class FilmDbStorage implements FilmStorage {
     public ResponseEntity returnPopularFilms(int count) throws EntityNotFoundException {
         final List<Film> popularFilms = new ArrayList<>();
         SqlRowSet userRows = jdbcTemplate.queryForRowSet(
-                "select F.FILM_ID, COUNT(LIKE_ID) AS many from  FILMS F LEFT JOIN LIKES L on F.FILM_ID = L.FILM_ID GROUP BY F.FILM_ID ORDER BY many DESC LIMIT ?", count);
+                "select F.FILM_ID, COUNT(USER_ID) AS many from  FILMS F LEFT JOIN LIKES L on F.FILM_ID = L.FILM_ID GROUP BY F.FILM_ID ORDER BY many DESC LIMIT ?", count);
 
         while (userRows.next()) {
             int filmId = Integer.parseInt(userRows.getString("FILM_ID"));
@@ -172,9 +180,17 @@ public class FilmDbStorage implements FilmStorage {
 
         if (userRows.next()) {
             log.error("Этот пользователь уже поставил лайк этому фильму");
-            return new ResponseEntity<>(film, HttpStatus.valueOf(404));
+            return new ResponseEntity<>(film, HttpStatus.valueOf(500));
         }
         jdbcTemplate.update("INSERT INTO LIKES (FILM_ID, USER_ID) values(?,?)", film.getId(), user.getId());
+        log.info("Пользователь {} поставил лайк фильму: {} ", user, film);
+        return new ResponseEntity<>(film, HttpStatus.valueOf(200));
+    }
+
+    @Override
+    public ResponseEntity deleteLike(Film film, User user) {
+        jdbcTemplate.update("DELETE FROM LIKES WHERE FILM_ID = ? AND USER_ID = ?", film.getId(), user.getId());
+        log.info("Пользователь {} удалил лайк фильму: {} ", user, film);
         return new ResponseEntity<>(film, HttpStatus.valueOf(200));
     }
 

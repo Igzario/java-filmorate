@@ -37,7 +37,12 @@ class FilmorateApplicationTests {
         Date date = Date.valueOf(LocalDate.of(2020, 5, 6));
         Mpa mpa = new Mpa(2, "Ужас");
         int duration = 100;
-        Film film = new Film("film", "descriptionFilm", LocalDate.of(2020, 5, 6), 100, mpa);
+        Film film = new Film();
+        film.setName("film");
+        film.setDescription("descriptionFilm");
+        film.setReleaseDate(LocalDate.of(2020, 5, 6));
+        film.setMpa(mpa);
+        film.setDuration(100);
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();
         String sql = "INSERT INTO FILMS (MPA_ID, NAME, DESCRIPTION, RELIASEDATE, DURATION) values(?,?,?,?,?)";
         int rowsAffected = filmStorage.getJdbcTemplate().update(connection -> {
@@ -57,7 +62,9 @@ class FilmorateApplicationTests {
 
     @Test
     public void testUser() throws EntityNotFoundException {
-        User user = new User("ya1@Ya.ru", "login1");
+        User user = new User();
+        user.setEmail("ya1@Ya.ru");
+        user.setLogin("login1");
         user.setBirthday(LocalDate.of(1990, 5, 6));
         Date date = Date.valueOf(user.getBirthday());
         GeneratedKeyHolder generatedKeyHolder = new GeneratedKeyHolder();

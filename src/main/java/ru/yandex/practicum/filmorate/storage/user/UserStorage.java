@@ -8,11 +8,11 @@ import java.util.List;
 
 public interface UserStorage {
 
-    ResponseEntity userAdd(User user);
+    ResponseEntity addUser(User user);
 
-    List<User> usersGet() throws EntityNotFoundException;
+    List<User> getUsers() throws EntityNotFoundException;
 
-    ResponseEntity userUpdate(User user);
+    ResponseEntity updateUser(User user);
 
     User getUser(long id) throws EntityNotFoundException;
 }
