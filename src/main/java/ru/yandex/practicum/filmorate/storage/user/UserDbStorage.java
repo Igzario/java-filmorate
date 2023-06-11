@@ -40,13 +40,6 @@ public class UserDbStorage implements UserStorage {
         }, generatedKeyHolder);
         int id = generatedKeyHolder.getKey().intValue();
 
-//        int id = 0;
-//        SqlRowSet userRows = jdbcTemplate.queryForRowSet(
-//                "select USER_ID as id from USERS WHERE EMAIL = ? AND LOGIN = ? AND NAME = ? AND BIRTHDAY = ? GROUP  BY id", user.getEmail(), user.getLogin(), user.getName(), date);
-//        if (userRows.next()) {
-//            id = Integer.parseInt(userRows.getString("USER_ID"));
-//        }
-
         user.setId(id);
         log.info("Добавлен пользователь: {} ", user);
         return new ResponseEntity<>(user, HttpStatus.valueOf(201));
