@@ -38,15 +38,14 @@ public class UserDbStorage implements UserStorage {
             preparedStatement.setDate(4, date);
             return preparedStatement;
         }, generatedKeyHolder);
+        int id = generatedKeyHolder.getKey().intValue();
 
-        //Integer id = generatedKeyHolder.getKey().intValue(); не знаю почему но так тесты на гите не проходятся
-
-        int id = 0;
-        SqlRowSet userRows = jdbcTemplate.queryForRowSet(
-                "select USER_ID as id from USERS WHERE EMAIL = ? AND LOGIN = ? AND NAME = ? AND BIRTHDAY = ? GROUP  BY id", user.getEmail(), user.getLogin(), user.getName(), date);
-        if (userRows.next()) {
-            id = Integer.parseInt(userRows.getString("USER_ID"));
-        }
+//        int id = 0;
+//        SqlRowSet userRows = jdbcTemplate.queryForRowSet(
+//                "select USER_ID as id from USERS WHERE EMAIL = ? AND LOGIN = ? AND NAME = ? AND BIRTHDAY = ? GROUP  BY id", user.getEmail(), user.getLogin(), user.getName(), date);
+//        if (userRows.next()) {
+//            id = Integer.parseInt(userRows.getString("USER_ID"));
+//        }
 
         user.setId(id);
         log.info("Добавлен пользователь: {} ", user);
