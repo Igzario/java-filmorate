@@ -1,6 +1,6 @@
 CREATE TABLE IF NOT EXISTS USERS
 (
-    USER_ID  int NOT NULL AUTO_INCREMENT,
+    USER_ID  int AUTO_INCREMENT,
     EMAIL    varchar,
     LOGIN    varchar,
     NAME     varchar,
