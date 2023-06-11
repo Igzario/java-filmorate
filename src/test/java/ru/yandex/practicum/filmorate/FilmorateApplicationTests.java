@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate;
 
+import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
@@ -22,15 +23,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
 @AutoConfigureTestDatabase
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class FilmorateApplicationTests {
-    FilmDbStorage filmStorage;
-    UserDbStorage userStorage;
-
-    @Autowired
-    public FilmorateApplicationTests(FilmDbStorage filmStorage, UserDbStorage userStorage) {
-        this.filmStorage = filmStorage;
-        this.userStorage = userStorage;
-    }
+    final FilmDbStorage filmStorage;
+    final UserDbStorage userStorage;
 
     @Test
     public void testFilm() throws EntityNotFoundException {
