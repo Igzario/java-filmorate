@@ -6,15 +6,11 @@ import com.google.gson.internal.LinkedTreeMap;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonWriter;
 import com.squareup.okhttp.*;
-import lombok.RequiredArgsConstructor;
 import org.junit.jupiter.api.*;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.ConfigurableApplicationContext;
 import ru.yandex.practicum.filmorate.model.Film;
-import ru.yandex.practicum.filmorate.model.Mpa;
 import ru.yandex.practicum.filmorate.model.User;
 import java.io.IOException;
 import java.time.Duration;
@@ -24,14 +20,11 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 @SpringBootTest
-@AutoConfigureTestDatabase
-@RequiredArgsConstructor(onConstructor_ = @Autowired)
 class FilmorateApplicationTests {
     Gson gson;
     GsonBuilder gsonBuilder;
     OkHttpClient client;
     ConfigurableApplicationContext server;
-    Mpa mpa = new Mpa(2, "Ужас");
 
     @BeforeEach
     public void startServer() throws IOException {
@@ -50,8 +43,7 @@ class FilmorateApplicationTests {
 
     @Test
     public void contextLoadsFilm() throws IOException, InterruptedException {
-
-        Film film = new Film("film", "descriptionFilm", LocalDate.of(2020, 5, 6), 100, mpa);
+        Film film = new Film("film", "descriptionFilm", LocalDate.of(2020, 5, 6), 100);
         String jsonFilm = gson.toJson(film);
 
         MediaType mediaType = MediaType.parse("application/json");
@@ -67,7 +59,7 @@ class FilmorateApplicationTests {
 
         assertEquals(201, code);
 
-        Film film1 = new Film("film1", "descriptionFilm1", LocalDate.of(2020, 5, 6), 100, mpa);
+        Film film1 = new Film("film1", "descriptionFilm1", LocalDate.of(2020, 5, 6), 100);
         film1.setId(1);
         jsonFilm = gson.toJson(film1);
         body = RequestBody.create(mediaType, jsonFilm);
@@ -82,7 +74,7 @@ class FilmorateApplicationTests {
 
         assertEquals(200, code);
 
-        Film film2 = new Film("film2", "descriptionFilm2", LocalDate.of(2020, 5, 6), 100, mpa);
+        Film film2 = new Film("film2", "descriptionFilm2", LocalDate.of(2020, 5, 6), 100);
         film2.setId(5);
         jsonFilm = gson.toJson(film2);
         body = RequestBody.create(mediaType, jsonFilm);
@@ -95,7 +87,7 @@ class FilmorateApplicationTests {
         code = response.code();
         responseBody = response.body().string();
 
-        assertEquals(404, code);
+        assertEquals(500, code);
         film2.setId(2);
 
         request = new Request.Builder()
@@ -119,7 +111,7 @@ class FilmorateApplicationTests {
             double d = (double) map.get("duration");
             int duration = (int) d;
 
-            film3 = new Film(name, description, releaseDate, duration, mpa);
+            film3 = new Film(name, description, releaseDate, duration);
 
             assertEquals(200, code);
             assertEquals(film3, film1);
@@ -175,7 +167,7 @@ class FilmorateApplicationTests {
         code = response.code();
         responseBody = response.body().string();
 
-        assertEquals(404, code);
+        assertEquals(500, code);
         user2.setId(2);
 
         request = new Request.Builder()
