@@ -1,18 +1,24 @@
 package ru.yandex.practicum.filmorate.model;
+
 import lombok.Data;
+
 import javax.validation.constraints.*;
 import java.time.LocalDate;
+import java.util.*;
 
 @Data
 public class Film {
     private int id;
     @NotBlank(message = "Ошибка ввода - name: пустое поле")
-    private final String name;
+    private String name;
     @Size(max = 200, min = 1, message = "Длина описания больше 200 символов")
-    private final String description;
-    private final LocalDate releaseDate;
+    private String description;
+    private LocalDate releaseDate;
     @Positive
-    private final int duration;
+    private int duration;
+    private Set<Genre> genres = new LinkedHashSet<>();
+    @NotNull
+    private Mpa mpa;
 
     @Override
     public String toString() {

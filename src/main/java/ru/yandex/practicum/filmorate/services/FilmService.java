@@ -1,76 +1,52 @@
 package ru.yandex.practicum.filmorate.services;
+
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
+import ru.yandex.practicum.filmorate.exception.EntityNotFoundException;
+import ru.yandex.practicum.filmorate.exception.SqlException;
 import ru.yandex.practicum.filmorate.exception.ValidationException;
-import ru.yandex.practicum.filmorate.message.AppMessageError;
 import ru.yandex.practicum.filmorate.model.Film;
-import java.time.LocalDate;
-import java.util.LinkedList;
+import ru.yandex.practicum.filmorate.storage.film.FilmDbStorage;
+
+import javax.validation.Valid;
 import java.util.List;
 
 @Slf4j
+@Service
+@RequiredArgsConstructor(onConstructor_ = @Autowired)
 public class FilmService {
-    private final List<Film> films = new LinkedList<>();
-    private int id = 1;
-    public List<Film> getFilms() {
-        return films;
-    }
+    private final FilmDbStorage filmDbStorage;
 
-    public ResponseEntity filmPost(Film film) {
+    public ResponseEntity returnPopularFilms(int count) throws EntityNotFoundException {
         try {
-            if (!validation(film)) {
-                throw new ValidationException();
-            }
-            film.setId(id);
-            films.add(film);
-            id++;
-            log.info("Добавлен фильм: {} ", film);
-        } catch (Exception exception) {
-            String error = exception.getMessage();
-            if (exception.getClass() == ValidationException.class) {
-                log.error(exception.getMessage());
-                return new ResponseEntity<>(new AppMessageError(400, error), HttpStatus.BAD_REQUEST);
-            } else {
-                log.error("Не предвиденная ошибка: " + exception.toString());
-                return new ResponseEntity<>(new AppMessageError(500, error), HttpStatus.valueOf(500));
-            }
+            return filmDbStorage.returnPopularFilms(count);
+        } catch (EntityNotFoundException e) {
+            throw new RuntimeException(e);
         }
-        return new ResponseEntity<>(film, HttpStatus.valueOf(201));
     }
 
-    public ResponseEntity filmPut(Film film) {
-        try {
-            if (!validation(film)) {
-                throw new ValidationException();
-            }
-            for (Film film1 : films) {
-                if (film.getId() == film1.getId()) {
-                    int i = films.indexOf(film1);
-                    films.remove(film1);
-                    films.add(i, film);
-                    log.info("Обновлен фильм: {} ", film);
-                    return new ResponseEntity<>(film, HttpStatus.valueOf(200));
-                }
-            }
-        } catch (Exception exception) {
-            String error = exception.getMessage();
-            if (exception.getClass() == ValidationException.class) {
-                log.error(exception.getMessage());
-                return new ResponseEntity<>(new AppMessageError(400, error), HttpStatus.BAD_REQUEST);
-            } else {
-                log.error("Не предвиденная ошибка: " + exception.getMessage());
-                return new ResponseEntity<>(new AppMessageError(500, error), HttpStatus.valueOf(500));
-            }
+    public ResponseEntity getFilm(long id) throws EntityNotFoundException {
+        final Film film = filmDbStorage.getFilm(id);
+        if (film != null) {
+            return new ResponseEntity<>(film, HttpStatus.valueOf(200));
         }
-        log.error("Не найден Film для обновления");
-        return new ResponseEntity<>(film, HttpStatus.valueOf(500));
+        throw new EntityNotFoundException("Фильм");
     }
 
-    private boolean validation(Film film) {
-        if (film.getReleaseDate() != null && film.getReleaseDate().isBefore(LocalDate.of(1895, 12, 28))) {
-            return false;
-        }
-        return true;
+    public ResponseEntity addFilm(@Valid @RequestBody Film film) throws ValidationException, SqlException {
+        return filmDbStorage.addFilm(film);
+    }
+
+    public ResponseEntity updateFilm(@Valid @RequestBody Film film) throws ValidationException, SqlException, EntityNotFoundException {
+        return filmDbStorage.updateFilm(film);
+    }
+
+    public List getFilms() throws EntityNotFoundException {
+        return filmDbStorage.filmsGet();
     }
 }
